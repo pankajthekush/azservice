@@ -23,7 +23,7 @@ def return_session(bucket_name,credential_json_file = 'keys.json'):
 def upload_file(bucket_name,file_name,in_sub_folder):
     fname = os.path.basename(file_name)
     str_dt = time.strftime("%m%d%Y")
-    print(str_dt)
+
     key = f'{in_sub_folder}/{str_dt}/{fname}'
     already_exists = list(bucket_name.objects.filter(Prefix=key)).__len__() > 0
     
@@ -34,7 +34,20 @@ def upload_file(bucket_name,file_name,in_sub_folder):
         print(f'File {key} already exits Skipping')
 
 
+def is_already_exist(bucket_name,file_name,in_sub_folder):
+    fname = os.path.basename(file_name)
+    str_dt = time.strftime("%m%d%Y")
+    key = f'{in_sub_folder}/{str_dt}/{fname}'
+    already_exists = list(bucket_name.objects.filter(Prefix=key)).__len__() > 0
+    
+    if not already_exists:
+        return False
+    else:
+        return True
+
+
+
 if __name__ == "__main__":
     bckt = return_session('kapowautostorerhoaiindia')
-    upload_file(bckt,'setup.py','LinkedIn/Profiles')
+    print (is_already_exist(bckt,'setup.py','LinkedIn/Profiles'))
     
