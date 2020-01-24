@@ -40,10 +40,10 @@ def is_already_exist(bucket_name,file_name,in_sub_folder):
     key = f'{in_sub_folder}/{str_dt}/{fname}'
     already_exists = list(bucket_name.objects.filter(Prefix=key)).__len__() > 0
     
-    if not already_exists:
-        return False
-    else:
+    if already_exists:
         return True
+    else:
+        return False
 
 
 
