@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 keys.json
 .vscode/settings.json
+azwmail/uname.txt

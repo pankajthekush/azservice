@@ -1,15 +1,32 @@
 import smtplib,ssl
 import os
-
+from email.message import EmailMessage
 import tkinter as tk
 from tkinter import filedialog
 import keyring
+import click
 
-import logging
+current_path = os.path.dirname(os.path.abspath(__file__))
 
-username = 'robot@rho-bot.awsapps.com'
+
+username = ''
 service_name = 'workmail'
 password = None
+
+ufilename = os.path.join(current_path,'uname.txt')
+
+if os.path.exists(ufilename):
+    with open(ufilename,'r') as f:
+        username = f.readline()
+
+else:
+    with open(ufilename,'w') as f:
+        email = input("Please enter email ID : ")
+        f.write(email)
+    with open(ufilename,'r') as f:
+        username = f.readline()
+
+
 
 def get_credentials():
     creds = None
@@ -35,10 +52,36 @@ def return_email_session():
     server.login(username,password)
     return server
 
-def send_email(send_to='pankaj.kushwaha@rho.ai'):
+
+@click.command()
+@click.option('--send-to',default=username,help='Email Address to send the email ,default is self')
+@click.option('--body',default='Email from robo id',help='Bodyf of email,defualt is "Email from robo id')
+@click.option('--subject',default='Notification from robo it',help='Subject line, default is Notification from robo id')
+
+def send_email(send_to,body,subject):
+
+    e_msg = EmailMessage()
+    e_msg.set_content(body)
+    e_msg['Subject'] = subject
+    e_msg['From'] = username
+    e_msg['To'] = send_to
+
     server = return_email_session()
-    server.sendmail(from_addr=username,to_addrs=send_to,msg='hello from cli')
+    server.send_message(e_msg)
     server.close()
 
+def send_email2(send_to,body,subject):
+
+    e_msg = EmailMessage()
+    e_msg.set_content(body)
+    e_msg['Subject'] = subject
+    e_msg['From'] = username
+    e_msg['To'] = send_to
+
+    server = return_email_session()
+    #server.sendmail(from_addr=username,to_addrs=send_to,msg='hello from cli')
+    server.send_message(e_msg)
+    server.close()
+    
 if __name__ == "__main__":
-    send_email()
+    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS BODY',subject='THIS IS SUB') 
