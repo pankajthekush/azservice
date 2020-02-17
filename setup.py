@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='supload',
     version='0.2',
-    packages=['supload','awins'],
+    packages=['supload','awins','azwmail'],
     install_requires=['boto3>=1.10.46'],
     entry_points ={'console_scripts': ['azrdp = awins.awins:connect_rdp',
                                         'azip = awins.awins:get_public_ip',
