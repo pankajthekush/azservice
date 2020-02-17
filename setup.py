@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='supload',
+    name='azservice',
     version='0.2',
     packages=['supload','awins','azwmail'],
     install_requires=['boto3>=1.10.46'],
