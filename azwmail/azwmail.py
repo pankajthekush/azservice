@@ -21,7 +21,7 @@ if os.path.exists(ufilename):
 
 else:
     with open(ufilename,'w') as f:
-        email = input("Please enter email ID : ")
+        email = input("Please enter login email id : ")
         f.write(email)
     with open(ufilename,'r') as f:
         username = f.readline()
@@ -70,7 +70,7 @@ def send_email(send_to,body,subject):
     server.send_message(e_msg)
     server.close()
 
-def send_email2(send_to,body,subject):
+def send_email2(send_to,body,subject,attacment_dir= None):
 
     e_msg = EmailMessage()
     e_msg.set_content(body)
@@ -79,9 +79,21 @@ def send_email2(send_to,body,subject):
     e_msg['To'] = send_to
 
     server = return_email_session()
-    #server.sendmail(from_addr=username,to_addrs=send_to,msg='hello from cli')
+    
+    if not attacment_dir is None:
+        for fname in os.listdir(attacment_dir):
+            full_path = os.path.join(attacment_dir,fname)
+            if not os.path.isfile(full_path):
+                continue
+            # use a generic bag-of-bits type.
+            #https://docs.python.org/3/library/email.examples.html#id3
+            maintype,subtype = 'application','octet-stream'
+            with open(full_path,'rb') as fp:
+                e_msg.add_attachment(fp.read(),maintype=maintype,subtype=subtype,filename=fname)
+
     server.send_message(e_msg)
+
     server.close()
     
 if __name__ == "__main__":
-    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS BODY',subject='THIS IS SUB') 
+    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
