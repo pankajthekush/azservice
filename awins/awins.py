@@ -3,8 +3,7 @@ from time import sleep
 import subprocess
 
 client = boto3.client('ec2', region_name='ap-south-1')
-import logging
-logging.basicConfig(level=logging.DEBUG)
+
 
 
 
@@ -63,22 +62,22 @@ def start_instance(instance_id = None):
     
     if (ins_state == 'RUNNING'):
         public_ip =  get_public_ip()
-        logging.debug(f'Instance running at : {public_ip}')
+        #logging.debug(f'Instance running at : {public_ip}')
         return public_ip
 
     elif(ins_state == 'INITIALIZING'):
         while (not ins_state == 'RUNNING') or (not ins_state == 'RUNNING') :
-            logging.debug("System Already Initialized , waiting to close or start")
+           # logging.debug("System Already Initialized , waiting to close or start")
             if(ins_state == 'RUNNING'):
                 public_ip =  get_public_ip()
-                logging.debug(f'Instance running at : {public_ip}')
+              #  logging.debug(f'Instance running at : {public_ip}')
                 return public_ip
 
 
     try:
         client.start_instances(InstanceIds=l_instance_id)
     except Exception:
-        logging.debug('could not start instance, try again')
+        #logging.debug('could not start instance, try again')
         return 'could not start instance, try again'
     ins_state = get_instance_status(instance_id=instance_id)
 
@@ -138,11 +137,11 @@ def get_instance_status(instance_id = None):
         SystemStatus_reachablity = all_status['SystemStatus']['Details'][0]['Status'] #should be passed
         SystemStatus_status = all_status['SystemStatus']['Status'] #should be ok
 
-        logging.debug(f'Instance State :{InstanceState}')
-        logging.debug(f'Instance Reachiblity :{tanceStatus_reachability}')
-        logging.debug(f'Instance Status :{tanceStatus_status}')
-        logging.debug(f'System Status :{SystemStatus_status}')
-        logging.debug(f'System Reachiblity :{SystemStatus_status}')
+        print(f'Instance State :{InstanceState}')
+        print(f'Instance Reachiblity :{tanceStatus_reachability}')
+        print(f'Instance Status :{tanceStatus_status}')
+        print(f'System Status :{SystemStatus_status}')
+        print(f'System Reachiblity :{SystemStatus_status}')
 
         if (InstanceState == 'running' and 
                 tanceStatus_reachability == 'passed' and 
@@ -160,11 +159,11 @@ def get_instance_status(instance_id = None):
         SystemStatus_reachablity = 'not found' #should be passed
         SystemStatus_status = 'not found' #should be ok
 
-        logging.debug(f'Instance State :{InstanceState}')
-        logging.debug(f'Instance Reachiblity :{tanceStatus_reachability}')
-        logging.debug(f'Instance Status :{tanceStatus_status}')
-        logging.debug(f'System Status :{SystemStatus_status}')
-        logging.debug(f'System Reachiblity :{SystemStatus_status}')
+        print(f'Instance State :{InstanceState}')
+        print(f'Instance Reachiblity :{tanceStatus_reachability}')
+        print(f'Instance Status :{tanceStatus_status}')
+        print(f'System Status :{SystemStatus_status}')
+        print(f'System Reachiblity :{SystemStatus_status}')
         
         return 'STOPPED'
         
@@ -174,11 +173,11 @@ def connect_rdp():
     public_ip = start_instance()
 
     if public_ip == 'notfound':
-        logging.debug("Something Wrong, can't get public IP")
+        print("Something Wrong, can't get public IP")
     else:
         aws_ip = f'/v:{public_ip}'
         subprocess.run(['mstsc',aws_ip])
-    logging.debug("launched rdp")
+    print("launched rdp")
 
 if __name__ == "__main__":
     #print(stop_instance())
