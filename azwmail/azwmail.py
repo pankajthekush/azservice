@@ -107,5 +107,4 @@ def send_email2(send_to,body,subject,attacment_dir= None):
     
 if __name__ == "__main__":
     #send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
-    s = return_imap_email_session()
-    print(dir(s))
+    pass
