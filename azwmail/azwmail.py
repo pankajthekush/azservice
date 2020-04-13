@@ -1,4 +1,5 @@
 import smtplib,ssl
+import imaplib
 import os
 from email.message import EmailMessage
 import tkinter as tk
@@ -35,6 +36,7 @@ def get_credentials():
     if creds is None:
         set_credentials()
         creds = keyring.get_password(service_name=service_name,username=username)
+    
     return username,creds
     
 
@@ -49,8 +51,16 @@ def return_email_session():
     username,password =get_credentials()
     server = smtplib.SMTP_SSL('smtp.mail.us-east-1.awsapps.com',465)
     server.ehlo()
+    #input(f'{username},{password}')
     server.login(username,password)
     return server
+
+def imap_session():
+    username,password =get_credentials()
+    server = imaplib.IMAP4_SSL('imap.mail.us-east-1.awsapps.com',993)
+    server.login(username,password)
+    return server
+
 
 
 @click.command()
@@ -96,4 +106,6 @@ def send_email2(send_to,body,subject,attacment_dir= None):
     server.close()
     
 if __name__ == "__main__":
-    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
+    #send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
+    s = return_imap_email_session()
+    print(dir(s))
