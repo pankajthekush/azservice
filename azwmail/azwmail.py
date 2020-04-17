@@ -5,7 +5,6 @@ from email.message import EmailMessage
 import tkinter as tk
 from tkinter import filedialog
 import keyring
-import click
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -26,7 +25,6 @@ else:
         f.write(email)
     with open(ufilename,'r') as f:
         username = f.readline()
-
 
 
 def get_credentials():
@@ -62,24 +60,6 @@ def imap_session():
     return server
 
 
-
-@click.command()
-@click.option('--send-to',default=username,help='Email Address to send the email ,default is self')
-@click.option('--body',default='Email from robo id',help='Bodyf of email,defualt is "Email from robo id')
-@click.option('--subject',default='Notification from robo it',help='Subject line, default is Notification from robo id')
-
-def send_email(send_to,body,subject):
-
-    e_msg = EmailMessage()
-    e_msg.set_content(body)
-    e_msg['Subject'] = subject
-    e_msg['From'] = username
-    e_msg['To'] = send_to
-
-    server = return_email_session()
-    server.send_message(e_msg)
-    server.close()
-
 def send_email2(send_to,body,subject,attacment_dir= None):
 
     e_msg = EmailMessage()
@@ -106,5 +86,4 @@ def send_email2(send_to,body,subject,attacment_dir= None):
     server.close()
     
 if __name__ == "__main__":
-    #send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
-    pass
+    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
