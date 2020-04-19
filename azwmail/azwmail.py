@@ -15,21 +15,28 @@ password = None
 
 ufilename = os.path.join(current_path,'uname.txt')
 
-if os.path.exists(ufilename):
-    with open(ufilename,'r') as f:
-        username = f.readline()
+def return_username_file():
+    global username
+    if os.path.exists(ufilename):
+        with open(ufilename,'r') as f:
+            username = f.readline()
 
-else:
-    with open(ufilename,'w') as f:
-        email = input("Please enter login email id : ")
-        f.write(email)
-    with open(ufilename,'r') as f:
-        username = f.readline()
+    else:
+        with open(ufilename,'w') as f:
+            email = input("Please enter robot email id : ")
+            f.write(email)
+        with open(ufilename,'r') as f:
+            username = f.readline()
+    return username
+
 
 
 def get_credentials():
-    creds = None
+
+    username = return_username_file()
+    creds = None    
     creds = keyring.get_password(service_name=service_name,username=username)
+
 
     if creds is None:
         set_credentials()
@@ -39,8 +46,9 @@ def get_credentials():
     
 
 def set_credentials():
-    _username = username
-    _password = input("Enter Password : ")
+    
+    _username = return_username_file()
+    _password = input(f"Enter Password for {username}: ")
     keyring.set_password(service_name=service_name,username=_username,password=_password)
     
 
@@ -49,7 +57,6 @@ def return_email_session():
     username,password =get_credentials()
     server = smtplib.SMTP_SSL('smtp.mail.us-east-1.awsapps.com',465)
     server.ehlo()
-    #input(f'{username},{password}')
     server.login(username,password)
     return server
 
@@ -61,7 +68,7 @@ def imap_session():
 
 
 def send_email2(send_to,body,subject,attacment_dir= None):
-
+    username,_ = get_credentials()
     e_msg = EmailMessage()
     e_msg.set_content(body)
     e_msg['Subject'] = subject
@@ -69,7 +76,6 @@ def send_email2(send_to,body,subject,attacment_dir= None):
     e_msg['To'] = send_to
 
     server = return_email_session()
-    
     if not attacment_dir is None:
         for fname in os.listdir(attacment_dir):
             full_path = os.path.join(attacment_dir,fname)
@@ -86,4 +92,4 @@ def send_email2(send_to,body,subject,attacment_dir= None):
     server.close()
     
 if __name__ == "__main__":
-    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir='C:\\Users\\Pankaj\\Downloads\\test') 
+    send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir=None) 
