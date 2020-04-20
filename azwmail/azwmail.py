@@ -5,7 +5,7 @@ from email.message import EmailMessage
 import tkinter as tk
 from tkinter import filedialog
 import keyring
-
+import time
 current_path = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -55,7 +55,22 @@ def set_credentials():
 
 def return_email_session():
     username,password =get_credentials()
-    server = smtplib.SMTP_SSL('smtp.mail.us-east-1.awsapps.com',465)
+    server = None
+
+    #sometime server connection is not done , so try 10 time befor giving up
+    for _ in range(10):
+        try:
+            server = smtplib.SMTP_SSL('smtp.mail.us-east-1.awsapps.com',465)
+            break
+        except:
+            server = None
+            time.sleep(10)
+            
+    if server is None:
+        #even after 10 attemts server connection is not established
+        #screw this and return none
+        return None
+    
     server.ehlo()
     server.login(username,password)
     return server
@@ -75,7 +90,14 @@ def send_email2(send_to,body,subject,attacment_dir= None):
     e_msg['From'] = username
     e_msg['To'] = send_to
 
+
     server = return_email_session()
+
+    if server is None:
+        #connection to servr not established exiting
+        print('connection with server could not be established.no email')
+        return 0
+
     if not attacment_dir is None:
         for fname in os.listdir(attacment_dir):
             full_path = os.path.join(attacment_dir,fname)

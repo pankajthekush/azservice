@@ -12,7 +12,11 @@ def upload_file(file_name,in_sub_folder,bucket_name):
     fname = os.path.basename(file_name)
     str_dt = time.strftime("%m%d%Y")
     key = f'{in_sub_folder}/{str_dt}/{fname}'
-    client.upload_file(fname, Bucket=bucket_name ,Key=key)
+    try:
+        client.upload_file(fname, Bucket=bucket_name ,Key=key)
+    except:
+        print(f'{file_name} not uploaded')
+
     
 
 def is_already_exist(file_name,in_sub_folder,bucket_name):
