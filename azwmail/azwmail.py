@@ -108,10 +108,14 @@ def send_email2(send_to,body,subject,attacment_dir= None):
             maintype,subtype = 'application','octet-stream'
             with open(full_path,'rb') as fp:
                 e_msg.add_attachment(fp.read(),maintype=maintype,subtype=subtype,filename=fname)
-
-    server.send_message(e_msg)
-
-    server.close()
+    try:
+        server.send_message(e_msg)
+    except Exception as e:
+        print(e)
+    try:
+        server.quit()
+    except Exception as e:
+        print(e)
     
 if __name__ == "__main__":
     send_email2(send_to='pankaj.kushwaha@rho.ai',body='THIS IS new with atta',subject='THIS IS SUB',attacment_dir=None) 
