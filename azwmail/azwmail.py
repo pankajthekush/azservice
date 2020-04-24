@@ -61,6 +61,8 @@ def return_email_session():
     for _ in range(10):
         try:
             server = smtplib.SMTP_SSL('smtp.mail.us-east-1.awsapps.com',465)
+            server.ehlo()
+            server.login(username,password)
             break
         except:
             server = None
@@ -71,8 +73,7 @@ def return_email_session():
         #screw this and return none
         return None
     
-    server.ehlo()
-    server.login(username,password)
+    
     return server
 
 def imap_session():
