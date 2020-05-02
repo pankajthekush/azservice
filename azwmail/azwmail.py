@@ -2,8 +2,6 @@ import smtplib,ssl
 import imaplib
 import os
 from email.message import EmailMessage
-import tkinter as tk
-from tkinter import filedialog
 import keyring
 import time
 current_path = os.path.dirname(os.path.abspath(__file__))
