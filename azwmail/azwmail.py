@@ -6,14 +6,21 @@ import tkinter as tk
 from tkinter import filedialog
 import keyring
 import time
+import sys
 current_path = os.path.dirname(os.path.abspath(__file__))
+
 
 
 username = ''
 service_name = 'workmail'
 password = None
+sys.platform
+if sys.platform == 'linux':
+    ufilename = 'uname.txt'
+    pfilename ='paswd.txt'
+else:
+    ufilename = os.path.join(current_path,'uname.txt')
 
-ufilename = os.path.join(current_path,'uname.txt')
 
 def return_username_file():
     global username
@@ -29,11 +36,29 @@ def return_username_file():
             username = f.readline()
     return username
 
+def return_password_file():
+    global pfilename
+    if os.path.exists(pfilename):
+        with open(pfilename,'r') as f:
+            password = f.readline()
+
+    else:
+        with open(pfilename,'w') as f:
+            password = input("Please enter robot password, this will be stored in plain text : ")
+            f.write(password)
+        with open(pfilename,'r') as f:
+            password = f.readline()
+    return password
+
 
 
 def get_credentials():
 
     username = return_username_file()
+
+    if sys.platform == 'linux':
+        creds = return_password_file()
+        return username,creds
     creds = None    
     creds = keyring.get_password(service_name=service_name,username=username)
 
