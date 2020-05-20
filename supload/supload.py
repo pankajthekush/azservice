@@ -14,9 +14,8 @@ def upload_file(file_name,in_sub_folder,bucket_name):
     key = f'{in_sub_folder}/{str_dt}/{fname}'
     try:
         client.upload_file(fname, Bucket=bucket_name ,Key=key)
-    except:
-        print(f'{file_name} not uploaded')
-
+    except Exception as e:
+        print(e)
     
 
 def is_already_exist(file_name,in_sub_folder,bucket_name):
