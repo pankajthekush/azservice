@@ -14,7 +14,7 @@ def upload_file(file_name,in_sub_folder,bucket_name):
     key = f'{in_sub_folder}/{str_dt}/{fname}'
     try:
         client.upload_file(file_name, Bucket=bucket_name ,Key=key)
-        print(f'fname --->{key}')
+        print(f'{fname}--->{key}')
     except Exception as e:
         print(e)
     
