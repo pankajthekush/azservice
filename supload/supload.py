@@ -17,6 +17,7 @@ def upload_file(file_name,in_sub_folder,bucket_name):
         print(f'{fname}--->{key}')
     except Exception as e:
         print(e)
+        return e
     
 
 def is_already_exist(file_name,in_sub_folder,bucket_name):
