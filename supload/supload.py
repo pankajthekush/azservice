@@ -13,7 +13,7 @@ def upload_file(file_name,in_sub_folder,bucket_name):
     str_dt = time.strftime("%m%d%Y")
     key = f'{in_sub_folder}/{str_dt}/{fname}'
     try:
-        client.upload_file(fname, Bucket=bucket_name ,Key=key)
+        client.upload_file(file_name, Bucket=bucket_name ,Key=key)
     except Exception as e:
         print(e)
     
