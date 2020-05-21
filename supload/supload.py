@@ -12,13 +12,16 @@ def upload_file(file_name,in_sub_folder,bucket_name):
     fname = os.path.basename(file_name)
     str_dt = time.strftime("%m%d%Y")
     key = f'{in_sub_folder}/{str_dt}/{fname}'
+
+    s3_url = f's3://{bucket_name}/{key}'
+
     try:
         client.upload_file(file_name, Bucket=bucket_name ,Key=key)
         print(f'{fname}--->{key}')
-        return True
+        return True,s3_url
     except Exception as e:
         print(e)
-        return False
+        return False,s3_url
     
 
 def is_already_exist(file_name,in_sub_folder,bucket_name):
@@ -36,5 +39,5 @@ def is_already_exist(file_name,in_sub_folder,bucket_name):
 
 
 if __name__ == "__main__":
-    pass
+    print(upload_file('tes.txt','kapowautostorerhoaiindia/google-scrape/05202020','rhoaiautomationindias3'))
  
