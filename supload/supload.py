@@ -7,7 +7,7 @@ import sys
 import time
 
 
-def upload_file(file_name,in_sub_folder,bucket_name):
+def upload_file(file_name,in_sub_folder,bucket_name,supress_print=True):
     client = boto3.client('s3')
     fname = os.path.basename(file_name)
     str_dt = time.strftime("%m%d%Y")
@@ -17,7 +17,8 @@ def upload_file(file_name,in_sub_folder,bucket_name):
 
     try:
         client.upload_file(file_name, Bucket=bucket_name ,Key=key)
-        print(f'{fname}--->{key}')
+        if not supress_print:
+            print(f'{fname}--->{key}')
         return True,s3_url
     except Exception as e:
         print(e)
