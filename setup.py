@@ -8,7 +8,7 @@ setup(
     name='azservice',
     version='0.6',
     packages=['supload','awins','azwmail'],
-    install_requires=['boto3>=1.10.46','keyring>=21.1.0'],
+    install_requires=['boto3>=1.10.46','keyring>=20.0.1'],
     entry_points ={'console_scripts': ['azrdp = awins.awins:connect_rdp',
                                         'azip = awins.awins:get_public_ip',
                                         'azstatus=awins.awins:get_instance_status',
